@@ -24,7 +24,16 @@ app.get('/check-ssl', (req, res) => {
     if (!certificate || Object.keys(certificate).length === 0) {
       return res.status(500).send('The website did not provide a certificate');
     }
-    res.json(_.omit(certificate, 'pubkey', 'raw'));
+    let {
+      valid_to
+    } = certificate;
+    valid_to = new Date(valid_to);
+    const currentDate = new Date();
+    const daysToExpire = Math.floor((valid_to - currentDate) / (1000 * 60 * 60 * 24));
+    res.json({
+      ..._.omit(certificate, 'pubkey', 'raw'),
+      daysToExpire,
+    });
   });
 
   reqHttps.on('error', (e) => {
