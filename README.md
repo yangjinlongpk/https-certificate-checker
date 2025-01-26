@@ -1,38 +1,40 @@
-# SSL Certificate Checker
+**Read this in other languages: [English](README.md), [中文](README_zh.md).**
 
-这是一个使用Node.js构建的SSL证书检查服务。它允许用户通过提供主机名来检查SSL证书的详细信息。
+# HTTPS Certificate Checker
 
-## 安装
+This is an HTTPS certificate checking service built with Node.js. It allows users to check the details of HTTPS certificates by providing a hostname.
 
-首先，克隆此存储库并安装依赖项：
+## Installation
+
+First, clone this repository and install the dependencies:
 
 ```bash
-git clone https://github.com/yourusername/ssl-certificate-checker.git
-cd ssl-certificate-checker
+git clone https://github.com/yourusername/https-certificate-checker.git
+cd https-certificate-checker
 npm install
 ```
 
-## 使用
+## Usage
 
-启动服务：
+Start the service:
 
 ```bash
 npm start
 ```
 
-服务将运行在`http://localhost:3000`。
+The service will run at `http://localhost:3000`.
 
-要检查SSL证书，请访问以下URL：
+To check an HTTPS certificate, visit the following URL:
 
 ```
-http://localhost:3000/check-ssl?hostname=example.com
+http://localhost:3000/check-https?hostname=example.com
 ```
 
-将`example.com`替换为您要检查的主机名。
+Replace `example.com` with the hostname you want to check.
 
-## 返回示例
+## Response Example
 
-成功请求将返回类似以下的JSON响应：
+A successful request will return a JSON response similar to the following:
 
 ```json
 {
@@ -73,12 +75,12 @@ http://localhost:3000/check-ssl?hostname=example.com
 }
 ```
 
-## 依赖项
+## Dependencies
 
 - [express](https://www.npmjs.com/package/express)
 - [https](https://nodejs.org/api/https.html)
 - [underscore](https://www.npmjs.com/package/underscore)
 
-## 许可证
+## License
 
-此项目使用MIT许可证。有关更多信息，请参阅LICENSE文件。
+This project is licensed under the MIT License. For more information, see the LICENSE file.

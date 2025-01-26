@@ -5,7 +5,7 @@ const _ = require('underscore');
 const app = express();
 const port = process.env.PORT || 3000;
 
-app.get('/check-ssl', (req, res) => {
+app.get('/check-https', (req, res) => {
   const { hostname } = req.query;
 
   if (!hostname) {
@@ -44,5 +44,5 @@ app.get('/check-ssl', (req, res) => {
 });
 
 app.listen(port, () => {
-  console.log(`SSL Certificate Checker service running at http://localhost:${port}`);
+  console.log(`HTTPS Certificate Checker service running at http://localhost:${port}`);
 });

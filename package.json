@@ -1,7 +1,7 @@
 {
-  "name": "ssl-certificate-checker",
+  "name": "https-certificate-checker",
   "version": "1.0.0",
-  "description": "A service to check SSL certificates",
+  "description": "A service to check HTTPS certificates",
   "main": "index.js",
   "scripts": {
     "start": "cross-env PORT=3100 nodemon index.js"
