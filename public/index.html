@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HTTPS Certificate Checker</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/themes/prism-tomorrow.min.css" rel="stylesheet" id="theme-link">
+  <style>
+    .theme-toggle {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      display: flex;
+      align-items: center;
+    }
+    .theme-toggle input {
+      display: none;
+    }
+    .theme-toggle label {
+      cursor: pointer;
+      margin: 0 0.5rem;
+      font-size: 1.5rem;
+    }
+    .theme-toggle input:checked + label {
+      font-weight: bold;
+      text-shadow: 0 0 10px rgba(255, 255, 0, 1);
+    }
+    .loading {
+      cursor: not-allowed;
+      opacity: 0.6;
+    }
+    #result {
+      display: none;
+    }
+  </style>
+</head>
+<body class="bg-gray-100 text-gray-900">
+  <div class="container mx-auto p-4">
+    <h1 class="text-3xl font-bold mb-4">HTTPS Certificate Checker</h1>
+    <div class="theme-toggle">
+      <input type="radio" id="light-theme" name="theme" value="light" checked>
+      <label for="light-theme">🌞</label>
+      <input type="radio" id="dark-theme" name="theme" value="dark">
+      <label for="dark-theme">🌜</label>
+    </div>
+    <form id="check-form" class="mb-4 flex">
+      <div class="flex-grow mr-2">
+        <label for="hostname" class="block text-sm font-medium text-gray-700">Hostname:</label>
+        <input type="text" id="hostname" name="hostname" required class="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+      </div>
+      <button type="submit" class="self-end px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700">Check</button>
+    </form>
+    <pre id="result" class="bg-white p-4 rounded-md shadow-md"><code class="language-json"></code></pre>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-json.min.js"></script>
+  <script>
+    let lastHostname = '';
+
+    document.getElementById('check-form').addEventListener('submit', function(event) {
+      event.preventDefault();
+      const hostnameInput = document.getElementById('hostname');
+      const submitButton = event.target.querySelector('button[type="submit"]');
+      const hostname = hostnameInput.value;
+
+      if (hostname === lastHostname) {
+        return;
+      }
+
+      lastHostname = hostname;
+
+      // Disable input and show loading state
+      hostnameInput.disabled = true;
+      submitButton.classList.add('loading');
+      submitButton.textContent = 'Loading...';
+
+      fetch('/check-https', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ hostname })
+      })
+        .then(response => response.json())
+        .then(data => {
+          const formattedData = JSON.stringify(data, null, 2);
+          const resultElement = document.querySelector('#result');
+          resultElement.style.display = 'block';
+          resultElement.querySelector('code').textContent = formattedData;
+          Prism.highlightElement(resultElement.querySelector('code'));
+        })
+        .catch(error => {
+          document.getElementById('result').textContent = `Error: ${error.message}`;
+        })
+        .finally(() => {
+          // Re-enable input and reset loading state
+          hostnameInput.disabled = false;
+          submitButton.classList.remove('loading');
+          submitButton.textContent = 'Check';
+        });
+    });
+
+    document.querySelectorAll('input[name="theme"]').forEach((elem) => {
+      elem.addEventListener('change', function(event) {
+        const themeLink = document.getElementById('theme-link');
+        if (event.target.value === 'dark') {
+          themeLink.setAttribute('href', 'https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/themes/prism-tomorrow.min.css');
+          document.body.classList.remove('bg-gray-100', 'text-gray-900');
+          document.body.classList.add('bg-gray-900', 'text-gray-100');
+        } else {
+          themeLink.setAttribute('href', 'https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/themes/prism.min.css');
+          document.body.classList.remove('bg-gray-900', 'text-gray-100');
+          document.body.classList.add('bg-gray-100', 'text-gray-900');
+        }
+        Prism.highlightAll();
+      });
+    });
+
+    // Initialize theme based on user preference or system setting
+    const prefersDarkScheme = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    if (prefersDarkScheme) {
+      document.getElementById('dark-theme').checked = true;
+      document.getElementById('theme-link').setAttribute('href', 'https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/themes/prism-tomorrow.min.css');
+      document.body.classList.remove('bg-gray-100', 'text-gray-900');
+      document.body.classList.add('bg-gray-900', 'text-gray-100');
+    }
+
+    // Clear initial code content
+    document.querySelector('#result code').textContent = '';
+  </script>
+</body>
+</html>

@@ -1,12 +1,21 @@
 const express = require('express');
 const https = require('https');
 const _ = require('underscore');
+const path = require('path');
 
 const app = express();
 const port = process.env.PORT || 3000;
 
-app.get('/check-https', (req, res) => {
-  const { hostname } = req.query;
+app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.json());
+
+app.use((req, res, next) => {
+  console.log(`${new Date().toISOString()} - ${req.method} ${req.url}`);
+  next();
+});
+
+app.post('/check-https', (req, res) => {
+  const { hostname } = req.body;
 
   if (!hostname) {
     return res.status(400).send('Hostname is required');
@@ -24,9 +33,7 @@ app.get('/check-https', (req, res) => {
     if (!certificate || Object.keys(certificate).length === 0) {
       return res.status(500).send('The website did not provide a certificate');
     }
-    let {
-      valid_to
-    } = certificate;
+    let { valid_to } = certificate;
     valid_to = new Date(valid_to);
     const currentDate = new Date();
     const daysToExpire = Math.floor((valid_to - currentDate) / (1000 * 60 * 60 * 24));

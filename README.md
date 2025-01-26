@@ -75,11 +75,24 @@ A successful request will return a JSON response similar to the following:
 }
 ```
 
+## Web Interface
+
+The service also provides a web interface where users can input a hostname and check the HTTPS certificate details. The web interface supports light and dark themes, and the theme can be toggled using radio buttons.
+
+### Example
+
+1. Open your browser and go to `http://localhost:3000`.
+2. Enter the hostname you want to check in the input field.
+3. Click the "Check" button.
+4. The certificate details will be displayed below the input field.
+
 ## Dependencies
 
 - [express](https://www.npmjs.com/package/express)
 - [https](https://nodejs.org/api/https.html)
 - [underscore](https://www.npmjs.com/package/underscore)
+- [tailwindcss](https://www.npmjs.com/package/tailwindcss)
+- [prismjs](https://www.npmjs.com/package/prismjs)
 
 ## License
 

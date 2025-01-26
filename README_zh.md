@@ -75,11 +75,24 @@ http://localhost:3000/check-https?hostname=example.com
 }
 ```
 
+## Web界面
+
+该服务还提供了一个Web界面，用户可以在其中输入主机名并检查HTTPS证书的详细信息。Web界面支持明亮和暗色主题，可以使用单选按钮切换主题。
+
+### 示例
+
+1. 打开浏览器并访问`http://localhost:3000`。
+2. 在输入字段中输入您要检查的主机名。
+3. 点击“Check”按钮。
+4. 证书详细信息将显示在输入字段下方。
+
 ## 依赖项
 
 - [express](https://www.npmjs.com/package/express)
 - [https](https://nodejs.org/api/https.html)
 - [underscore](https://www.npmjs.com/package/underscore)
+- [tailwindcss](https://www.npmjs.com/package/tailwindcss)
+- [prismjs](https://www.npmjs.com/package/prismjs)
 
 ## 许可证
 
