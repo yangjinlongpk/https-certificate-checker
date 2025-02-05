@@ -5,6 +5,7 @@ const path = require('path');
 
 const app = express();
 const port = process.env.PORT || 3000;
+const hostname = process.env.HOST || '0.0.0.0';
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
@@ -50,6 +51,6 @@ app.post('/check-https', (req, res) => {
   reqHttps.end();
 });
 
-app.listen(port, () => {
+app.listen(port, hostname, () => {
   console.log(`HTTPS Certificate Checker service running at http://localhost:${port}`);
 });
