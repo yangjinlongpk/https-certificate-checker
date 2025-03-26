@@ -52,5 +52,5 @@ app.post('/check-https', (req, res) => {
 });
 
 app.listen(port, hostname, () => {
-  console.log(`HTTPS Certificate Checker service running at http://localhost:${port}`);
+  console.log(`HTTPS Certificate Checker service running at http://${hostname}:${port}`);
 });
