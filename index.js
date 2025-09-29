@@ -25,7 +25,8 @@ app.post('/check-https', (req, res) => {
   const options = {
     hostname,
     port: 443,
-    method: 'GET'
+    method: 'GET',
+    path: `/?t=${Date.now()}`
   };
 
   const reqHttps = https.request(options, (response) => {
