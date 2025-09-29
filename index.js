@@ -22,14 +22,13 @@ app.post('/check-https', (req, res) => {
     return res.status(400).send('Hostname is required');
   }
 
-  const options = {
+
+  const reqHttps = https.request({
     hostname,
     port: 443,
     method: 'GET',
     path: `/?t=${Date.now()}`
-  };
-
-  const reqHttps = https.request(options, (response) => {
+  }, (response) => {
     const certificate = response.socket.getPeerCertificate();
     console.log(certificate);
     if (!certificate || Object.keys(certificate).length === 0) {
