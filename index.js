@@ -30,7 +30,7 @@ app.post('/check-https', (req, res) => {
 
   const reqHttps = https.request(options, (response) => {
     const certificate = response.socket.getPeerCertificate();
-
+    console.log(certificate);
     if (!certificate || Object.keys(certificate).length === 0) {
       return res.status(500).send('The website did not provide a certificate');
     }
